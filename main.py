@@ -2,25 +2,50 @@
 
 import requests, time, os
 from selenium import webdriver
+from selenium.webdriver.chrome import options
+from selenium.webdriver.firefox import options as fir_options
 import re
 
-browser = webdriver.Firefox()
-browser.maximize_window()
+browser = None
 
+try:
+    chrome_options = options.Options()
+    chrome_options.add_argument("--headless")
+    browser = webdriver.Chrome(options=chrome_options)
+    print("Chrome Found.")
+    browser.maximize_window()
+except(IOError, Exception):
+    print("Chrome not Found. Moving to Firefox.")
+    pass
 
-# replace this url with the url of the album you want to download.
-url = "https://downloads.khinsider.com/game-soundtracks/album/persona-5-royal"
+try:
+    firefox_options = fir_options.Options()
+    firefox_options.add_argument("--headless")
+    browser = webdriver.Firefox(options=firefox_options)
+    print("Firefox Found.")
+    browser.maximize_window()
+except(IOError, Exception):
+    print("Firefox not found. Get one of these")
+    pass
+
+# url for album to download.
+url = input("Enter the URL for the album to download: ")
 
 
 flac_check = re.findall('FLAC', requests.get(url).text)
 browser.get(url)
 
-time.sleep(3)
+time.sleep(2)
 
 source = browser.page_source    # only GOD knows why this exits. I am too afraid to delete it.
 filename = browser.find_elements_by_tag_name("h2")[0].text      # folder name
 browser.find_element_by_xpath("//div[@class='audioplayerVolume']").click()      # mute
-os.mkdir(f"D:\\Music\\VG\\{filename}")
+
+if os.path.isdir(f"D:\\Music\\VG\\{filename}"):
+    print("Folder already exists. Files will be overwritten")
+else:
+    os.mkdir(f"D:\\Music\\VG\\{filename}")
+
 buttons = browser.find_elements_by_class_name("arrow-play")     # button to play song
 xpath_result = browser.find_elements_by_xpath('//td[@class="clickable-row"]//a')    # track name
 track_name = []
@@ -32,6 +57,7 @@ if flac_check:
         track_name.append(xpath_result[i].text)
 else:
     print('FLAC filetype is not available for this album.\n Downloading mp3 format.')
+    flac_or_not = 'm'
     for i in range(0, len(xpath_result), 3):
         track_name.append(xpath_result[i].text)
 

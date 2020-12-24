@@ -51,7 +51,8 @@ add_info.send_keys('The game is completely broken and is plagued with massive ga
                    'that have already caused my PS4 to crash multiple times(more than 12) and it happens every half '
                    'an hour or so. I have already tried to contact you guys regarding this issue but there has been '
                    'no contact from your end, which is very disappointing. Please help in getting my money back and '
-                   'returning this BROKEN product.')
+                   'returning this BROKEN product. Now the publisher has also stated that the game is broken and we '
+                   'can get refund if we want')
 
 time.sleep(0.5)
 browser.find_element_by_class_name('cta__primary').click()
