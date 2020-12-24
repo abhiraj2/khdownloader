@@ -12,3 +12,9 @@ Changes made on 13/12/2020
 * Added support for FLAC file type for lossless audio.
 * Changed the naming system. Songs now include the track name along with the number.
 * Muted the audio player on the website.
+
+Changes made on 25/12/2020
+* Added support for chrome browser
+* Fixed the error where a program exits out if no FLAC is available
+* Files now overwrite when using the same URL twice.
+* Browsers are now hidden.
